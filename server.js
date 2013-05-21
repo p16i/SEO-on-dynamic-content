@@ -4,7 +4,7 @@ var http = require("http"),
     fs = require("fs"),
     spawn = require('child_process').spawn,
     port = (process.argv[2] || 8888),
-    prerender = process.argv[3] || false;
+    prerender = process.argv[3] || true;
 
 var mimeTypes = {
     "htm": "text/html",
@@ -14,12 +14,11 @@ var mimeTypes = {
     "png": "image/png",
     "gif": "image/gif",
     "js": "text/javascript",
-    "css": "text/css"
-};
+    "css": "text/css"};
 
 var virtualDirectories = {
     //"images": "../images/"
-};
+  };
 
 http.createServer(function(request, response) {
 
@@ -58,7 +57,7 @@ http.createServer(function(request, response) {
       response.writeHead(200, {"Content-Type": mimeType});
 
       if(prerender && mimeType === mimeTypes.html){
-          phantom = spawn('phantomjs', ['render.js', filename ]);
+          phantom = spawn('phantomjs', ['render.js', filename]);
 
           phantom.stdout.on('data', function (data) {
               response.write(data, "utf8");
